@@ -1,5 +1,3 @@
-module MergeSort where
-
 main :: IO()
 main = do
    let list = [9,3,5,1,2,4,10,8,7,6]
