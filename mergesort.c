@@ -1,94 +1,72 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
+void merge_sort(int *array, int n);
+static void merge_sort_helper(int *array, int *temp, int left, int right);
+static void merge(int *array, int *temp, int left, int mid, int right);
 
-void merge(int *a, int left, int mid, int right) {
-    int i, j, k;
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-
-    int *L = (int *)malloc(n1 * sizeof(int));
-    int *R = (int *)malloc(n2 * sizeof(int));
-
-
-    for (i = 0; i < n1; i++)
-        L[i] = a[left + i];
-    for (j = 0; j < n2; j++)
-        R[j] = a[mid + 1 + j];
-
-
-    i = 0; 
-    j = 0; 
-    k = left; 
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            a[k] = L[i];
-            i++;
-        } else {
-            a[k] = R[j];
-            j++;
-        }
-        k++;
+void merge_sort(int *array, int n) {
+    if (n <= 0) return;
+    int *temp = (int *)malloc(n * sizeof(int));
+    if (temp == NULL) {
+        perror("Could not allocate memory");
+        exit(EXIT_FAILURE);
     }
-
-   
-    while (i < n1) {
-        a[k] = L[i];
-        i++;
-        k++;
-    }
-
-
-    while (j < n2) {
-        a[k] = R[j];
-        j++;
-        k++;
-    }
-
-
-    free(L);
-    free(R);
+    merge_sort_helper(array, temp, 0, n - 1);
+    free(temp);
 }
 
-void merge_sort_recursive(int *a, int left, int right) {
+static void merge_sort_helper(int *array, int *temp, int left, int right) {
     if (left < right) {
-        int mid = left + (right - left) / 2;
-
-
-        merge_sort_recursive(a, left, mid);
-        merge_sort_recursive(a, mid + 1, right);
-
-
-        merge(a, left, mid, right);
+        int mid = (left + right) / 2;
+        merge_sort_helper(array, temp, left, mid);
+        merge_sort_helper(array, temp, mid + 1, right);
+        merge(array, temp, left, mid, right);
     }
 }
 
+static void merge(int *array, int *temp, int left, int mid, int right) {
+    int i = left, j = mid + 1, k = left;
 
-void merge_sort(int *a, int n) {
-    merge_sort_recursive(a, 0, n - 1);
+    for (int l = left; l <= right; l++) {
+        temp[l] = array[l];
+    }
+
+    while (i <= mid && j <= right) {
+        if (temp[i] <= temp[j]) {
+            array[k++] = temp[i++];
+        } else {
+            array[k++] = temp[j++];
+        }
+    }
+
+    while (i <= mid) {
+        array[k++] = temp[i++];
+    }
+
+    while (j <= right) {
+        array[k++] = temp[j++];
+    }
 }
 
-void print_array(int *a, int n) {
+void print_arr(int *array, int n) {
     for (int i = 0; i < n; i++) {
-        printf("%d ", a[i]);
+        printf("%d ", array[i]);
     }
     printf("\n");
 }
 
-
 int main() {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr) / sizeof(arr[0]);
+    int array[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(array) / sizeof(array[0]);
 
-    printf("Original array:\n");
-    print_array(arr, n);
+    printf("Original:\n");
+    print_arr(array, n);
 
-    merge_sort(arr, n);
+    merge_sort(array, n);
 
-    printf("Sorted array:\n");
-    print_array(arr, n);
+    printf("Sorted:\n");
+    print_arr(array, n);
 
     return 0;
 }
