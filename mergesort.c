@@ -12,7 +12,9 @@ void merge_sort(int *array, int n) {
         perror("Could not allocate memory");
         exit(EXIT_FAILURE);
     }
+
     merge_sort_helper(array, temp, 0, n - 1);
+
     free(temp);
 }
 
@@ -51,8 +53,10 @@ static void merge(int *array, int *temp, int left, int mid, int right) {
 
 void print_arr(int *array, int n) {
     for (int i = 0; i < n; i++) {
+        
         printf("%d ", array[i]);
     }
+
     printf("\n");
 }
 
