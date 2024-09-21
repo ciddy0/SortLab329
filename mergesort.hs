@@ -10,16 +10,6 @@ merge (x:xs) (y:ys)
     | x <= y    = x : merge xs (y:ys)
     -- else add y to the result of mergng the entire first list (x:xs)
     | otherwise = y : merge (x:xs) ys
-{-
-Example:
-merge [1,3,5] [2,4,6]
-1<2
-1 : merge [3,5] [2,4,6]
-3 > 2
-1: (2: (3 : merge [5] [4,6]))
-5 < 6
-1 : (2: (3 : (4 : (5 : merge [] [6]))))
--}
 
 -- define the mergeSort function
 mergeSort :: Ord a => [a] -> [a]
