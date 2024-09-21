@@ -1,13 +1,5 @@
-main :: IO()
-main = do
-   let list = [9,3,5,1,2,4,10,8,7,6]
-
-   let sortedList = mergeSort list
-   putStrLn ("unsorted: " ++ show list)
-   putStrLn ("sorted: " ++ show sortedList)
-
 -- define the merge function
-merge :: [Int] -> [Int] -> [Int]
+merge :: Ord a=> [a] -> [a] -> [a]
 -- merging a empty list with any list will return the list
 merge [] xs = xs
 merge xs [] = xs
@@ -30,7 +22,7 @@ merge [1,3,5] [2,4,6]
 -}
 
 -- define the mergeSort function
-mergeSort :: [Int] -> [Int]
+mergeSort :: Ord a => [a] -> [a]
 
 -- base case empty list
 mergeSort [] = []
@@ -42,4 +34,16 @@ mergeSort xs = merge (mergeSort left) (mergeSort right)
     -- local binding that splits the list in half
     where
         (left, right) = splitAt (length xs `div` 2) xs
+
+main :: IO()
+main = do
+    
+   let list = [9,3,5,1,2,4,10,8,7,6]
+   let sortedList = mergeSort list
+   putStrLn ("unsorted: " ++ show list)
+   putStrLn ("sorted: " ++ show sortedList)
+   let list1 = []
+   let sortedList1 = mergeSort list1
+   putStrLn ("unsorted: " ++ show list1)
+   putStrLn ("sorted: " ++ show sortedList1)
 
