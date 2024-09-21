@@ -37,13 +37,24 @@ mergeSort xs = merge (mergeSort left) (mergeSort right)
 
 main :: IO()
 main = do
-    
+   -- case for sorting numbers
    let list = [9,3,5,1,2,4,10,8,7,6]
    let sortedList = mergeSort list
    putStrLn ("unsorted: " ++ show list)
    putStrLn ("sorted: " ++ show sortedList)
-   let list1 = []
+   
+   -- case for empty list
+   -- have to set the empty list to any type or ghc will throw an erro
+   let list1 :: [Int]
+       list1 = []
    let sortedList1 = mergeSort list1
    putStrLn ("unsorted: " ++ show list1)
    putStrLn ("sorted: " ++ show sortedList1)
+   
+   -- case to sort chars
+   let charList = ['c','i','d']
+   let sortedCharList = mergeSort charList
+   putStrLn ("unsorted: " ++ show charList)
+   putStrLn ("sorted: " ++ show sortedCharList)
+   
 
