@@ -44,7 +44,7 @@ main = do
    putStrLn ("sorted: " ++ show sortedList)
    
    -- case for empty list
-   -- have to set the empty list to any type or ghc will throw an erro
+   -- have to set the empty list to any type or ghc will throw an error
    let list1 :: [Int]
        list1 = []
    let sortedList1 = mergeSort list1
