@@ -1,143 +1,98 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void merge_sort(int *array, int n);
-static void merge_sort_helper(int *array, int *temp, int left, int right);
-static void merge(int *array, int *temp, int left, int mid, int right);
+void performMergeSort(int *arr, int length);
+void divideAndSort(int *arr, int *helper, int low, int high);
+void combineSortedHalves(int *arr, int *helper, int low, int middle, int high);
 
-void merge_sort(int *array, int n) {
-    if (n <= 0) return;
-    int *temp = (int *)malloc(n * sizeof(int));
-    if (temp == NULL) {
-        perror("Could not allocate memory");
+void performMergeSort(int *arr, int length) {
+    if (length <= 1) return;
+
+    int *helper = (int *)malloc(length * sizeof(int));
+    if (!helper) {
+        fprintf(stderr, "Memory allocation failed.\n");
         exit(EXIT_FAILURE);
     }
 
-    merge_sort_helper(array, temp, 0, n - 1);
-
-    free(temp);
+    divideAndSort(arr, helper, 0, length - 1);
+    free(helper);
 }
 
-static void merge_sort_helper(int *array, int *temp, int left, int right) {
-    if (left < right) {
-        int mid = (left + right) / 2;
-        merge_sort_helper(array, temp, left, mid);
-        merge_sort_helper(array, temp, mid + 1, right);
-        merge(array, temp, left, mid, right);
+void divideAndSort(int *arr, int *helper, int low, int high) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+        divideAndSort(arr, helper, low, mid);
+        divideAndSort(arr, helper, mid + 1, high);
+        combineSortedHalves(arr, helper, low, mid, high);
     }
 }
 
-static void merge(int *array, int *temp, int left, int mid, int right) {
-    int i = left, j = mid + 1, k = left;
-
-    for (int l = left; l <= right; l++) {
-        temp[l] = array[l];
+void combineSortedHalves(int *arr, int *helper, int low, int middle, int high) {
+    for (int i = low; i <= high; i++) {
+        helper[i] = arr[i];
     }
 
-    while (i <= mid && j <= right) {
-        if (temp[i] <= temp[j]) {
-            array[k++] = temp[i++];
+    int left = low;
+    int right = middle + 1;
+    int current = low;
+
+    while (left <= middle && right <= high) {
+        if (helper[left] <= helper[right]) {
+            arr[current++] = helper[left++];
         } else {
-            array[k++] = temp[j++];
+            arr[current++] = helper[right++];
         }
     }
 
-    while (i <= mid) {
-        array[k++] = temp[i++];
-    }
-
-    while (j <= right) {
-        array[k++] = temp[j++];
+    while (left <= middle) {
+        arr[current++] = helper[left++];
     }
 }
 
-void print_arr(int *array, int n) {
-    for (int i = 0; i < n; i++) {
-        
-        printf("%d ", array[i]);
+void displayArray(int *arr, int size) {
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
     }
-
     printf("\n");
 }
 
 int main() {
-    // Case 1: Random Unsorted Array
-    int testCase1[] = {34, 7, 23, 32, 5, 62};
-    int size1 = sizeof(testCase1) / sizeof(testCase1[0]);
-    printf("Test Case 1: Random Unsorted Array\n");
-    print_arr(testCase1, size1);
-    merge_sort(testCase1, size1);
-    print_arr(testCase1, size1);
-    
-    printf("\n");
+    // Test cases
+    int array1[] = {34, 7, 23, 32, 5, 62};
+    int length1 = sizeof(array1) / sizeof(array1[0]);
+    displayArray(array1, length1);
+    performMergeSort(array1, length1);
+    displayArray(array1, length1);
 
-    // Case 2: Already Sorted Array
-    int testCase2[] = {1, 2, 3, 4, 5, 6};
-    int size2 = sizeof(testCase2) / sizeof(testCase2[0]);
-    printf("Test Case 2: Already Sorted Array\n");
-    print_arr(testCase2, size2);
-    merge_sort(testCase2, size2);
-    print_arr(testCase2, size2);
-    
-    printf("\n");
+    int array2[] = {};
+    int length2 = sizeof(array2) / sizeof(array2[0]);
+    displayArray(array2, length2);
+    performMergeSort(array2, length2);
+    displayArray(array2, length2);
 
-    // Case 3: Reverse Order Array
-    int testCase3[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
-    int size3 = sizeof(testCase3) / sizeof(testCase3[0]);
-    printf("Test Case 3: Reverse Order Array\n");
-    print_arr(testCase3, size3);
-    merge_sort(testCase3, size3);
-    print_arr(testCase3, size3);
-    
-    printf("\n");
+    int array3[] = {42};
+    int length3 = sizeof(array3) / sizeof(array3[0]);
+    displayArray(array3, length3);
+    performMergeSort(array3, length3);
+    displayArray(array3, length3);
 
-    // Case 4: Single Element Array
-    int testCase4[] = {42};
-    int size4 = sizeof(testCase4) / sizeof(testCase4[0]);
-    printf("Test Case 4: Single Element Array\n");
-    print_arr(testCase4, size4);
-    merge_sort(testCase4, size4);
-    print_arr(testCase4, size4);
-    
-    printf("\n");
+    int array4[] = {9, 9, 9, 9, 9};
+    int length4 = sizeof(array4) / sizeof(array4[0]);
+    displayArray(array4, length4);
+    performMergeSort(array4, length4);
+    displayArray(array4, length4);
 
-    // Case 5: Empty Array
-    int testCase5[] = {};
-    int size5 = sizeof(testCase5) / sizeof(testCase5[0]);
-    printf("Test Case 5: Empty Array\n");
-    print_arr(testCase5, size5);
-    merge_sort(testCase5, size5);
-    print_arr(testCase5, size5);
-    
-    printf("\n");
+    int array5[] = {1, 2, 3, 4, 5};
+    int length5 = sizeof(array5) / sizeof(array5[0]);
+    displayArray(array5, length5);
+    performMergeSort(array5, length5);
+    displayArray(array5, length5);
 
-    // Case 6: Array with Duplicates
-    int testCase6[] = {8, 3, 3, 7, 9, 8, 5};
-    int size6 = sizeof(testCase6) / sizeof(testCase6[0]);
-    printf("Test Case 6: Array with Duplicates\n");
-    print_arr(testCase6, size6);
-    merge_sort(testCase6, size6);
-    print_arr(testCase6, size6);
-    
-    printf("\n");
-
-    // Case 7: Large Array
-    int testCase7[] = {23, 45, 12, 67, 89, 34, 90, 56, 78, 11, 22, 33};
-    int size7 = sizeof(testCase7) / sizeof(testCase7[0]);
-    printf("Test Case 7: Large Array\n");
-    print_arr(testCase7, size7);
-    merge_sort(testCase7, size7);
-    print_arr(testCase7, size7);
-    
-    printf("\n");
-
-    // Case 8: All Elements Identical
-    int testCase8[] = {7, 7, 7, 7, 7, 7};
-    int size8 = sizeof(testCase8) / sizeof(testCase8[0]);
-    printf("Test Case 8: All Elements Identical\n");
-    print_arr(testCase8, size8);
-    merge_sort(testCase8, size8);
-    print_arr(testCase8, size8);
+    int array6[] = {-10, 0, 2, -5, 4};
+    int length6 = sizeof(array6) / sizeof(array6[0]);
+    displayArray(array6, length6);
+    performMergeSort(array6, length6);
+    displayArray(array6, length6);
 
     return 0;
 }
