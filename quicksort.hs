@@ -7,18 +7,21 @@ quicksort (x:xs) =
         big = quicksort [a | a <- xs, a > x]
     in  small ++ [x] ++ big
 
-main :: IO ()
+main:: IO ()
 main = do
 
-    -- let test1 = []   -- Will Crash
-    -- putStrLn "Test 1 (Empty List)"
-    -- print $ quicksort test1
+    let test1 :: [Int]
+        test1 = []
+    putStrLn "Test 1 (Empty List)"
+    print $ quicksort test1
     
-    let test2 = [5, 4, 3, 2, 1]
+    let test2 :: [Int]
+        test2 = [5, 4, 3, 2, 1]
     putStrLn "\nTest 2"
     print $ quicksort test2
     
-    let test3 = [4, 2, 4, 1, 3, 2]
+    let test3 :: [Int]
+        test3 = [4, 2, 4, 1, 3, 2]
     putStrLn "\nTest 3"
     print $ quicksort test3
     
