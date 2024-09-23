@@ -1,10 +1,4 @@
 -- Quicksort for Assignment 1
--- GitHUb
--- https://onecompiler.com/haskell/         (Online compiler because my VScode doesn't want to work :( )
--- https://learnyouahaskell.com/
--- ChatGPT      (Used to fix main)
-
-
 
 quicksort :: Ord a => [a] -> [a]
 quicksort [] = []
